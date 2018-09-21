@@ -20,8 +20,6 @@ def write_queries(sheet, report_dict):
     sheet['J2'] = cells['unique_queries_total']
     sheet['J3'] = cells['search_events_total']
 
-    print('Search queries done')
-
 
 def write_popular(sheet, queries_dict):
     title = 'Популярные запросы'
@@ -47,5 +45,3 @@ def write_popular(sheet, queries_dict):
             max_width = len(query)
         j += 1
     sheet.column_dimensions['I'].width = max_width * 1.1
-
-    print('Popular queries done')

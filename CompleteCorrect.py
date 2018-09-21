@@ -36,8 +36,6 @@ def write_acomplete(sheet, report_dict):
     sheet['D11'] = cells['autocomplete_ctr'] / 100
     sheet['E11'] = cells['autocomplete_sessions_conversion'] / 100
 
-    print('Autocomplete total stat done')
-
 
 def write_clicks(sheet, report_dict):
     title = 'Клики по автоподказкам'
@@ -74,8 +72,6 @@ def write_clicks(sheet, report_dict):
     else:
         sheet['G13'] = cells['autocomplete_clicks']
 
-    print('Autocomplete clicks done')
-
 
 def write_corrections(sheet, report_dict):
     title = 'Исправления'
@@ -103,6 +99,3 @@ def write_corrections(sheet, report_dict):
     sheet['A17'] = cells['aq_correction_total']
     sheet['B17'] = cells['aq_correction_session_orders']
     sheet['C17'] = cells['aq_correction_revenue']
-
-    print('Autocomplete clicks done')
-

@@ -47,10 +47,8 @@ def set_styles(wb, sheet):
 def process(report_dict, start, end, filename):
     # creating workbook
     wb = Workbook()
-    start = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(start))
-    end = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(end))
     sheet = wb.active
-    sheet.title = '{}-{}'.format(start, end)
+    sheet.title = '{}-{}'.format(start[:-2], end[:-2])
 
     set_styles(wb, sheet)
 
@@ -61,6 +59,7 @@ def process(report_dict, start, end, filename):
     CompleteCorrect.write_corrections(sheet, report_dict)
     Queries.write_queries(sheet, report_dict)
     Queries.write_popular(sheet, report_dict['top_search_queries'])
+    print('Data loaded into virtual table')
 
     path = set_path() + filename
     while True:

@@ -11,7 +11,7 @@ def check_site(inp_str):
         # checking if there is the needed number of arguments
         while True:
             try:
-                site_id, site_name = inp_str.split()
+                site_id, site_name = re.split(r'[.,/?<>:;\s-]', inp_str)
                 break
             except ValueError:
                 inp_str = input('The input should contain 2 arguments. Enter: ')
@@ -34,7 +34,7 @@ def check_site(inp_str):
                      'If correct, hit ENTER. Otherwise type smth: '.format(site_id, site_name)):
             break
         else:
-            inp_str = input('Enter SiteId SiteName: ')
+            inp_str = input('Enter Site_Id Site_Name: ')
 
     return site_id, site_name
 
@@ -48,9 +48,13 @@ def check_date(start, end):
                 try:
                     day, month, year = re.split(r'[.,/?<>:;\s-]', date)
                 except ValueError:
-                    date = input('The format of "{}" is incorrect. '
-                                 'Enter in format 01.01.2016, e.g.: '.format(date))
-                    continue
+                    try:
+                        day, month = re.split(r'[.,/?<>:;\s-]', date)
+                        year = '2018'
+                    except ValueError:
+                        date = input('The format of "{}" is incorrect. '
+                                     'Enter in format 01.01.2016, e.g.: '.format(date))
+                        continue
                 # check for integers
                 try:
                     day, month, year = int(day), int(month), int('20'+year[-2:])
@@ -78,9 +82,11 @@ def check_date(start, end):
                                                 date_list[0][2]):
             print('The second date is more than the first one.')
             start, end = input('Start date: '), input('End date: ')
+            continue
         # last user check
-        if not input('Dates are: {} - {}. Correct? '.format('.'.join([str(i) for i in date_list[0]]),
-                                                           '.'.join([str(j) for j in date_list[1]]))):
+        str_start = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(date_list[0]))
+        str_end = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(date_list[1]))
+        if not input('Dates are: {} - {}. Correct? '.format(str_start, str_end)):
             break
         else:
             start, end = input('Start date: '), input('End date: ')

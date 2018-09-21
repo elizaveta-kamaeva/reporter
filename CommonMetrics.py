@@ -67,5 +67,3 @@ def write_common(sheet, report_dict):
     sheet['B6'] = cells['autocomplete_and_search_sessions_total'] / cells['sessions_total']
     sheet['C6'] = cells['autocomplete_and_search_sessions_orders_total'] / cells['orders_total']
     sheet['D6'] = cells['autocomplete_and_search_sessions_revenue'] / cells['revenue_total']
-
-    print('Common metrics done')

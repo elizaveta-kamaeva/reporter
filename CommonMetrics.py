@@ -43,27 +43,63 @@ def write_common(sheet, report_dict):
     sheet['B3'] = cells['sessions_total']
     sheet['C3'] = cells['orders_total']
     sheet['D3'] = cells['revenue_total']
-    sheet['E3'] = sheet['C3'].value / sheet['B3'].value
-    sheet['F3'] = round(sheet['D3'].value / sheet['B3'].value, 2)
-    sheet['G3'] = round(sheet['D3'].value / sheet['C3'].value, 2)
+    try:
+        sheet['E3'] = round(sheet['C3'].value / sheet['B3'].value)
+    except ZeroDivisionError:
+        sheet['E3'] = 0
+    try:
+        sheet['F3'] = round(sheet['D3'].value / sheet['B3'].value, 2)
+    except ZeroDivisionError:
+        sheet['F3'] = 0
+    try:
+        sheet['G3'] = round(sheet['D3'].value / sheet['C3'].value, 2)
+    except ZeroDivisionError:
+        sheet['G3'] = 0
 
     # sessions without search
     sheet['B4'] = cells['sessions_total'] - cells['autocomplete_and_search_sessions_total']
     sheet['C4'] = cells['orders_total'] - cells['autocomplete_and_search_sessions_orders_total']
     sheet['D4'] = cells['revenue_total'] - cells['autocomplete_and_search_sessions_revenue']
-    sheet['E4'] = sheet['C4'].value / sheet['B4'].value
-    sheet['F4'] = round(sheet['D4'].value / sheet['B4'].value, 2)
-    sheet['G4'] = round(sheet['D4'].value / sheet['C4'].value, 2)
+    try:
+        sheet['E4'] = round(sheet['C4'].value / sheet['B4'].value, 2)
+    except ZeroDivisionError:
+        sheet['E4'] = 0
+    try:
+        sheet['F4'] = round(sheet['D4'].value / sheet['B4'].value, 2)
+    except ZeroDivisionError:
+        sheet['F4'] = 0
+    try:
+        sheet['G4'] = round(sheet['D4'].value / sheet['C4'].value, 2)
+    except ZeroDivisionError:
+        sheet['G4'] = 0
 
     # sessions with search
     sheet['B5'] = cells['autocomplete_and_search_sessions_total']
     sheet['C5'] = cells['autocomplete_and_search_sessions_orders_total']
     sheet['D5'] = cells['autocomplete_and_search_sessions_revenue']
-    sheet['E5'] = sheet['C5'].value / sheet['B5'].value
-    sheet['F5'] = round(sheet['D5'].value / sheet['B5'].value, 2)
-    sheet['G5'] = round(sheet['D5'].value / sheet['C5'].value, 2)
+    try:
+        sheet['E5'] = round(sheet['C5'].value / sheet['B5'].value, 2)
+    except ZeroDivisionError:
+        sheet['E5'] = 0
+    try:
+        sheet['F5'] = round(sheet['D5'].value / sheet['B5'].value, 2)
+    except ZeroDivisionError:
+        sheet['F5'] = 0
+    try:
+        sheet['G5'] = round(sheet['D5'].value / sheet['C5'].value, 2)
+    except ZeroDivisionError:
+        sheet['G5'] = 0
 
     # with search / total
-    sheet['B6'] = cells['autocomplete_and_search_sessions_total'] / cells['sessions_total']
-    sheet['C6'] = cells['autocomplete_and_search_sessions_orders_total'] / cells['orders_total']
-    sheet['D6'] = cells['autocomplete_and_search_sessions_revenue'] / cells['revenue_total']
+    try:
+        sheet['B6'] = round(cells['autocomplete_and_search_sessions_total'] / cells['sessions_total'], 2)
+    except ZeroDivisionError:
+        sheet['B6'] = 0
+    try:
+        sheet['C6'] = round(cells['autocomplete_and_search_sessions_orders_total'] / cells['orders_total'], 2)
+    except ZeroDivisionError:
+        sheet['C6'] = 0
+    try:
+        sheet['D6'] = round(cells['autocomplete_and_search_sessions_revenue'] / cells['revenue_total'], 2)
+    except ZeroDivisionError:
+        sheet['D6'] = 0

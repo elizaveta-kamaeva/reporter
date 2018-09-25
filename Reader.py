@@ -4,6 +4,11 @@ from collections import OrderedDict
 
 
 def read_json(siteid, start, end):
+    str_start = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(start))
+    str_end = '.'.join(str(i).rjust(2, '0')[-2:] for i in reversed(end))
+    print('Getting data for site id "{}", dates: {} - {}'.format(siteid,
+                                                                 str_start,
+                                                                 str_end))
     json_url = 'http://94.130.152.53:48095/metrics/agg/{}' \
                '/global?name=all&from={}T00:00:00&' \
                'to={}T23:59:59'.format(siteid,
@@ -11,7 +16,6 @@ def read_json(siteid, start, end):
                                        '-'.join([str(j) for j in end]))
     json_site = urlopen(json_url)
     json_data = load(json_site)
-    print('Got JSON data')
 
     return json_data
 
@@ -57,7 +61,12 @@ def get_values(json_data):
     return report_dict
 
 
-def process(site_id, start, end):
-    json_data = read_json(site_id, start, end)
-    report_dict = get_values(json_data)
-    return report_dict
+def process(site_id, date_array):
+    reports_array = []
+    for date in date_array:
+        start, end = date[0], date[1]
+        json_data = read_json(site_id, start, end)
+        report_dict = get_values(json_data)
+        reports_array.append(report_dict)
+    print('Got JSON data')
+    return reports_array

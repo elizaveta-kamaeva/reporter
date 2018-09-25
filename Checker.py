@@ -40,8 +40,8 @@ def check_site(inp_str):
 
 
 def check_date(start, end):
-    date_list = []
     while True:
+        date_list = []
         for date in (start, end):
             while True:
                 # check for correct format
@@ -91,4 +91,4 @@ def check_date(start, end):
         else:
             start, end = input('Start date: '), input('End date: ')
 
-    return date_list[0], date_list[1]
+    return (date_list[0], date_list[1])

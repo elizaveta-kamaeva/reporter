@@ -72,4 +72,4 @@ def process(reports_array, date_array, filename):
             break
         except PermissionError:
             input('I can\'t write to an opened file. Close it, please, and hit ENTER.')
-    startfile(path)
+    #startfile(path)

@@ -4,16 +4,14 @@ from datetime import datetime
 
 
 def check_site(inp_str):
-    punc_dict = {}
-    for letter in punctuation:
-        punc_dict[ord(letter)] = None
     while True:
         # checking if there is the needed number of arguments
         while True:
-            try:
-                site_id, site_name = re.split(r'[.,/?<>:;\s-]', inp_str)
+            splitted_input = re.split(r'[.,/?<>:;\s-]', inp_str)
+            if len(splitted_input) == 2:
+                site_id, site_name = splitted_input
                 break
-            except ValueError:
+            else:
                 inp_str = input('The input should contain 2 arguments. Enter: ')
 
         while True:
@@ -24,10 +22,9 @@ def check_site(inp_str):
             if len(site_name) > 30:
                 site_name = input('The site name is too long. Enter site name: ')
                 continue
-            try:
-                site_id = int(site_id.translate(punc_dict))
+            if site_id.isdigit():
                 break
-            except ValueError:
+            else:
                 site_id = input('The site id should be integer. Enter site id: ')
         # last user check
         if not input('I\'ll prepare report for siteid {}, site "{}". '
@@ -40,39 +37,44 @@ def check_site(inp_str):
 
 
 def check_date(start, end):
-    while True:
+    date_correct = False
+    while not date_correct:
         date_list = []
         for date in (start, end):
             while True:
                 # check for correct format
-                try:
-                    day, month, year = re.split(r'[.,/?<>:;\s-]', date)
-                except ValueError:
-                    try:
-                        day, month = re.split(r'[.,/?<>:;\s-]', date)
-                        year = '2018'
-                    except ValueError:
-                        date = input('The format of "{}" is incorrect. '
+                splitted_date = re.split(r'[.,/?<>:;\s-]', date)
+                if len(splitted_date) == 3:
+                    day, month, year = splitted_date
+                elif len(splitted_date) == 2:
+                    day, month = re.split(r'[.,/?<>:;\s-]', date)
+                    year = '2018'
+                else:
+                    date = input('The format of "{}" is incorrect. '
                                      'Enter in format 01.01.2016, e.g.: '.format(date))
-                        continue
+                    continue
+
                 # check for integers
-                try:
+                if day.isdigit() and month.isdigit() and year.isdigit():
                     day, month, year = int(day), int(month), int('20'+year[-2:])
-                except ValueError:
+                else:
                     date = input('There are not numbers in "{}". '
                                  'Enter smth in format 01.01.2001, e.g.: '.format(date))
                     continue
                 # check for adequacy
+                if day > 31 or day < 1 or month > 12 or month < 1 or year > 3000 or year < 1:
+                    date = input('The date {}.{}.{} is impossible. '
+                                 'Enter smth in format 01.01.2018, e.g.: '.format(day, month, year))
+                    continue
                 try:
-                    if datetime.now() < datetime(year, month, day) < datetime(2016, 1, 1):
+                    if datetime(2016, 1, 1) < datetime(year, month, day) < datetime.now():
+                        break
+                    else:
                         date = input('The date {}.{}.{} is impossible. '
-                                 'Enter smth in format 01.01.2016, e.g.: '.format(day, month, year))
-                        continue
+                                 'Enter smth in format 01.01.2018, e.g.: '.format(day, month, year))
                 except ValueError:
                     date = input('The date {}.{}.{} is impossible. '
-                                 'Enter smth in format 01.01.2016, e.g.: '.format(day, month, year))
-                    continue
-                break
+                                 'Enter smth in format 01.01.2018, e.g.: '.format(day, month, year))
             date_list.append((year, month, day))
         # check if end is more than the start
         if datetime(date_list[1][0],
